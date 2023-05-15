@@ -1,6 +1,7 @@
 <script setup>
-import {ref} from 'vue'
-let todos = ref ([])
+import {ref, watch} from 'vue'
+
+let todos = ref (JSON.parse(window.localStorage.getItem('todos',)))
 let newTodo = ref('')
 
 
@@ -19,6 +20,13 @@ function deleteTodo (index) {
   
 
 }
+
+watch(todos, function (value)
+{
+  window.localStorage.setItem('todos', JSON.stringify(value))
+ 
+}, {deep:true})
+
 </script>
 
 <template>
@@ -29,7 +37,7 @@ function deleteTodo (index) {
  <li v-for="(todo, index) in todos">
   <button @click="deleteTodo(index)">X</button>
   {{ index + 1 }}
-  <input type="checkbox" v-model="todo.complete">
+  <input type="checkbox" v-model="todo.complete" id="check">
   {{ todo.text }}
 
      
@@ -47,10 +55,28 @@ function deleteTodo (index) {
 
 <style>
 .stylediv  {
-  background-color: rgb(11, 112, 78);
+  background-color: rgb(38, 193, 204);
+  background-size: 10px;
 }
 
+#check {
+  margin: 50px;
+            width: 15px;
+            height: 15px;
+            border: 12px solid rgb(0, 0, 0);
+            padding: 10px;
+            accent-color: rgb(20, 146, 28);
+       
+            opacity: 1;
+            cursor: pointer;
+            
+}
 
+#check:hover
+ {
+     
+       color:rgb(2, 104, 119);
+        }
 
 </style>
 
